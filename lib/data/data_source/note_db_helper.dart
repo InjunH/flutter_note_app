@@ -30,8 +30,12 @@ class NoteDbHelper {
   }
 
   Future<void> updateNote(Note note) async {
-    await db
-        .update('note', note.toJson(), where: 'id = ?', whereArgs: [note.id]);
+    await db.update(
+      'note',
+      note.toJson(),
+      where: 'id = ?',
+      whereArgs: [note.id],
+    );
   }
 
   Future<int> deleteNote(Note note) async {
