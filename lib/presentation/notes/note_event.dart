@@ -11,4 +11,5 @@ class NoteEvent<T> with _$NoteEvent<T> {
   const factory NoteEvent.deleteNote(Note note) = DeleteNote;
   const factory NoteEvent.restoreNote() = ReStoreNote;
   const factory NoteEvent.changeOrder(NoteOrder noteOrder) = ChangeOrder;
+  const factory NoteEvent.toggleOrderSection() = ToggleOrderSection;
 }

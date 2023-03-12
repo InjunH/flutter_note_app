@@ -8,8 +8,11 @@ import 'package:flutter_note_app/presentation/notes/notes_state.dart';
 
 class NoteViewModel with ChangeNotifier {
   final UseCases useCases;
+
   NotesState _state = const NotesState(
-      notes: [], noteOrder: NoteOrder.date(OrderType.descending()));
+      notes: [],
+      noteOrder: NoteOrder.date(OrderType.descending()),
+      isOrderSectionVisible: false);
   NotesState get state => _state;
 
   Note? _recentlyDeleteNote;
@@ -20,14 +23,18 @@ class NoteViewModel with ChangeNotifier {
 
   void onEvent(NoteEvent event) {
     event.when(
-      loadNotes: _loadNotes,
-      deleteNote: _deleteNote,
-      restoreNote: _restoreNote,
-      changeOrder: (NoteOrder noteOrder) {
-        _state = state.copyWith(noteOrder: noteOrder);
-        _loadNotes();
-      },
-    );
+        loadNotes: _loadNotes,
+        deleteNote: _deleteNote,
+        restoreNote: _restoreNote,
+        changeOrder: (NoteOrder noteOrder) {
+          _state = state.copyWith(noteOrder: noteOrder);
+          _loadNotes();
+        },
+        toggleOrderSection: () {
+          _state = state.copyWith(
+              isOrderSectionVisible: !state.isOrderSectionVisible);
+          notifyListeners();
+        });
   }
 
   Future<void> _loadNotes() async {
