@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_note_app/domain/model/note.dart';
-import 'package:flutter_note_app/domain/repository/note_repository.dart';
+import 'package:flutter_note_app/domain/use_case/use_cases.dart';
 import 'package:flutter_note_app/presentation/notes/note_event.dart';
 import 'package:flutter_note_app/presentation/notes/notes_state.dart';
 
 class NoteViewModel with ChangeNotifier {
-  NoteRepository repository;
-
+  final UseCases useCases;
   NotesState _state = const NotesState(notes: []);
   NotesState get state => _state;
 
   Note? _recentlyDeleteNote;
 
-  NoteViewModel(this.repository) {
+  NoteViewModel(this.useCases) {
     _loadNotes();
   }
 
@@ -24,13 +23,13 @@ class NoteViewModel with ChangeNotifier {
   }
 
   Future<void> _loadNotes() async {
-    List<Note> notes = await repository.getNotes();
+    List<Note> notes = await useCases.getNotes();
     _state = state.copyWith(notes: notes);
     notifyListeners();
   }
 
   Future<void> _deleteNote(Note note) async {
-    await repository.deleteNote(note);
+    await useCases.deleteNote(note);
 
     _recentlyDeleteNote = note;
 
@@ -39,7 +38,7 @@ class NoteViewModel with ChangeNotifier {
 
   Future<void> _restoreNote() async {
     if (_recentlyDeleteNote != null) {
-      await repository.insertNote(_recentlyDeleteNote!);
+      await useCases.addNote(_recentlyDeleteNote!);
 
       _recentlyDeleteNote = null;
 

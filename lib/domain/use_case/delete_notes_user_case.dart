@@ -1,10 +1,10 @@
 import 'package:flutter_note_app/domain/model/note.dart';
 import 'package:flutter_note_app/domain/repository/note_repository.dart';
 
-class DeleteNote {
+class DeleteNoteUseCase {
   final NoteRepository repository;
 
-  DeleteNote(this.repository);
+  DeleteNoteUseCase(this.repository);
 
   Future<void> call(Note note) async {
     await repository.deleteNote(note);
