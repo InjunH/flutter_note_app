@@ -20,9 +20,14 @@ class NoteViewModel with ChangeNotifier {
 
   void onEvent(NoteEvent event) {
     event.when(
-        loadNotes: _loadNotes,
-        deleteNote: _deleteNote,
-        restoreNote: _restoreNote);
+      loadNotes: _loadNotes,
+      deleteNote: _deleteNote,
+      restoreNote: _restoreNote,
+      changeOrder: (NoteOrder noteOrder) {
+        _state = state.copyWith(noteOrder: noteOrder);
+        _loadNotes();
+      },
+    );
   }
 
   Future<void> _loadNotes() async {
